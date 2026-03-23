@@ -232,6 +232,11 @@ exports.handleRazorpayWebhook = async (req, res) => {
       order.status = ORDER_STATUS.REMAINING_PAYMENT_COMPLETED;
     }
 
+    if (!paymentType) {
+      return res.status(200).json({ message: "Unknown payment mapping" });
+    }
+
+
     await order.save();
 
     // 💾 Create Payment record

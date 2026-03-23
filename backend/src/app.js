@@ -14,10 +14,7 @@ const app = express();
 // Enable CORS
 app.use(cors());
 
-/**
- * 🚨 WEBHOOK MUST BE BEFORE express.json()
- * Razorpay requires RAW body
- */
+// Razorpay webhook endpoint - needs raw body parsing
 app.post(
   "/api/payments/webhook",
   express.raw({ type: "application/json" }),
