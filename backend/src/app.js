@@ -6,6 +6,12 @@ const orderRoutes = require('./routes/order.routes');
 const productRoutes = require("./routes/product.routes");
 const templateRoutes = require("./routes/template.routes");
 const paymentRoutes = require("./routes/payment.routes");
+const adminRequestRoutes = require("./routes/adminRequest.routes"); // ← NEW
+
+const deliveryRoutes = require("./routes/delivery.routes");
+// const adminRoutes = require("./routes/admin.routes");
+// const webhookRoutes = require("./routes/webhook.routes");
+
 
 const paymentController = require("./controllers/payment.controller");
 
@@ -39,5 +45,10 @@ app.use('/api/orders', orderRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/templates", templateRoutes);
 app.use("/api/payments", paymentRoutes);
+app.use("/api/admin-requests", adminRequestRoutes);
+
+app.use("/api/delivery", deliveryRoutes);
+// app.use("/api/admin", adminRoutes);
+// app.use("/api/webhook", webhookRoutes);
 
 module.exports = app;
