@@ -1,49 +1,87 @@
+// // src/services/auth.service.js
+// import api from "./api";
+// import * as SecureStore from "expo-secure-store";
+
+// /**
+//  * POST /api/auth/register
+//  * Body: { name, email, password, role }
+//  */
+// export const registerUser = async ({ name, email, password, role = "customer" }) => {
+//   const response = await api.post("/auth/register", { name, email, password, role });
+//   return response.data; // { message, user }
+// };
+
+// /**
+//  * POST /api/auth/login
+//  * Body: { email, password }
+//  * Stores JWT in SecureStore on success
+//  */
+// export const loginUser = async ({ email, password }) => {
+//   const response = await api.post("/auth/login", { email, password });
+//   const { token, user } = response.data;
+
+//   await SecureStore.setItemAsync("token", token);
+
+//   return { token, user }; // { id, name, email, role }
+// };
+
+// /**
+//  * GET /api/auth/me
+//  * Returns the logged-in user object
+//  */
+// export const getMe = async () => {
+//   const response = await api.get("/auth/me");
+//   return response.data; // User object (no password)
+// };
+
+// /**
+//  * Clears JWT from SecureStore (logout)
+//  */
+// export const logoutUser = async () => {
+//   await SecureStore.deleteItemAsync("token");
+// };
+
+// /**
+//  * Check if a token exists in SecureStore
+//  */
+// export const getStoredToken = async () => {
+//   return await SecureStore.getItemAsync("token");
+// };
+
+//********************************************************* 
+
+
 // src/services/auth.service.js
 import api from "./api";
 import * as SecureStore from "expo-secure-store";
 
-/**
- * POST /api/auth/register
- * Body: { name, email, password, role }
- */
-export const registerUser = async ({ name, email, password, role = "customer" }) => {
+export const registerUser = async (userData) => {
+  // Use destructuring to ensure we don't accidentally send undefined roles
+  const { name, email, password, role } = userData;
   const response = await api.post("/auth/register", { name, email, password, role });
-  return response.data; // { message, user }
+  return response.data;
 };
 
-/**
- * POST /api/auth/login
- * Body: { email, password }
- * Stores JWT in SecureStore on success
- */
 export const loginUser = async ({ email, password }) => {
   const response = await api.post("/auth/login", { email, password });
   const { token, user } = response.data;
 
-  await SecureStore.setItemAsync("token", token);
+  if (token) {
+    await SecureStore.setItemAsync("token", token);
+  }
 
-  return { token, user }; // { id, name, email, role }
+  return { token, user }; 
 };
 
-/**
- * GET /api/auth/me
- * Returns the logged-in user object
- */
 export const getMe = async () => {
   const response = await api.get("/auth/me");
-  return response.data; // User object (no password)
+  return response.data;
 };
 
-/**
- * Clears JWT from SecureStore (logout)
- */
 export const logoutUser = async () => {
   await SecureStore.deleteItemAsync("token");
 };
 
-/**
- * Check if a token exists in SecureStore
- */
 export const getStoredToken = async () => {
   return await SecureStore.getItemAsync("token");
 };
